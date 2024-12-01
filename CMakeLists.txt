@@ -1,7 +1,6 @@
-cmake_minimum_required(VERSION 3.10.0)
-
-project (rvcc)
+cmake_minimum_required(VERSION 3.5.0)
+project(rvcc VERSION 0.1.0 LANGUAGES C)
 
 add_executable(rvcc main.c)
 
-SET(CMAKE_C_FLAGS "-std=c11 -g -fno-common")
+target_compile_options(rvcc PRIVATE -std=c11 -g -fno-common)
