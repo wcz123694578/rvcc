@@ -279,25 +279,19 @@ int main(int argc, char *argv[]) {
     CurrentInput = argv[1];
     Token *Tok = tokenize();
 
+    Node *Node = expr(&Tok, Tok);
+
+    if (Tok->Kind != TK_EOF)
+        errorTok(Tok, "extra token");
+
     printf("    .global main\n");
     printf("main:\n");
-    printf("    li a0, %d\n", getNumber(Tok));
-    Tok = Tok->Next;
 
-    while (Tok->Kind != TK_EOF) {
-        if (equal(Tok, "+")) {
-            Tok = Tok->Next;
-            printf("    addi a0, a0, %d\n", getNumber(Tok));
-            Tok = Tok->Next;
-            continue;
-        }
-
-        Tok = skip(Tok, "-");
-        printf("    addi a0, a0, -%d\n", getNumber(Tok));
-        Tok = Tok->Next;
-    }
+    genExpr(Node);
 
     printf("    ret\n");
+
+    assert(Depth == 0);
 
     return 0;
 }
